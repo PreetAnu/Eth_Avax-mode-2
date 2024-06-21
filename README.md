@@ -107,7 +107,8 @@ If you encounter any issues, ensure that:
 * MetaMask is installed and configured correctly.
 * You have enough funds in your MetaMask wallet on the local network.
 ## Authors
-Anupreet Kaur
+Name    : Anupreet Kaur
+email-id: anupreetk159@gmail.com
 ## License
 This project is licensed under the MIT License - see the LICENSE.md file for details.
 
