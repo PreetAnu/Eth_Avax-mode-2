@@ -24,13 +24,13 @@ pragma solidity ^0.8.9;
 //import "hardhat/console.sol";
 
 contract Assessment {
-    address payable public owner;
+    address public owner;
     uint256 public balance;
 
     event Deposit(uint256 amount);
     event Withdraw(uint256 amount);
-    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
-    event OwnershipRenounced(address indexed previousOwner);
+    event OwnershipTransferred(address indexed oldOwner, address indexed newOwner);
+    event OwnershipRenounced(address indexed oldOwner);
 
     constructor(uint initBalance) payable {
         owner = payable(msg.sender);
@@ -52,10 +52,8 @@ contract Assessment {
 
         // perform transaction
         balance += _amount;
-
         // assert transaction completed successfully
         assert(balance == _previousBalance + _amount);
-
         // emit the event
         emit Deposit(_amount);
     }
@@ -83,12 +81,13 @@ contract Assessment {
         emit Withdraw(_withdrawAmount);
     }
     
-     function transferOwnership(address payable newOwner) public onlyOwner {
-        require(newOwner != address(0), "New owner is the zero address");
-        address oldOwner = owner;
-        owner = newOwner;
-        emit OwnershipTransferred(oldOwner, newOwner);
+    function transferOwnership(address newOwner) public virtual onlyOwner {
+    require(newOwner != address(0), "Ownable: new owner is the zero address");
+    address oldOwner = owner;
+    owner = payable(newOwner);
+    emit OwnershipTransferred(oldOwner, newOwner);
     }
+
 
     function renounceOwnership() public onlyOwner {
         address oldOwner = owner;
@@ -96,7 +95,6 @@ contract Assessment {
         emit OwnershipRenounced(oldOwner);
     }
 }
-
 
 ```
 It allows users to deposit and withdraw funds, as well as transfer and renounce ownership. The contract emits events for deposits, withdrawals, and ownership changes.
